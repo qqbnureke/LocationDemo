@@ -1,4 +1,4 @@
-package kz.nurda.locationdemo;
+package kz.nurda.locationdemo.extra;
 
 import android.Manifest;
 import android.app.PendingIntent;
@@ -20,6 +20,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import kz.nurda.locationdemo.R;
 
 public class LocActivity extends AppCompatActivity {
 
@@ -95,4 +96,6 @@ public class LocActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

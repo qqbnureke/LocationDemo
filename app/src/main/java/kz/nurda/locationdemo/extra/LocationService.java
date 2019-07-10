@@ -1,4 +1,4 @@
-package kz.nurda.locationdemo;
+package kz.nurda.locationdemo.extra;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,19 +15,19 @@ public class LocationService extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent != null) {
+        if (intent != null){
             final String action = intent.getAction();
-            if (ACTION_PROCESS_UPDATE.equals(action)) {
+            if (ACTION_PROCESS_UPDATE.equals(action)){
                 LocationResult result = LocationResult.extractResult(intent);
-                if (result != null) {
+                if (result != null){
                     Location location = result.getLastLocation();
-                    String coordinates = new StringBuilder("" + location.getLatitude())
+                    String coordinates = new StringBuilder(""+location.getLatitude())
                             .append("/")
                             .append(location.getLongitude())
                             .toString();
                     try {
                         LocActivity.getInstance().updateTextView(coordinates);
-                    } catch (Exception ex) {
+                    }catch (Exception ex){
                         Toast.makeText(context, coordinates, Toast.LENGTH_SHORT).show();
                     }
                 }

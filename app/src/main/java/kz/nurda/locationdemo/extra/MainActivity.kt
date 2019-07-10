@@ -1,14 +1,13 @@
-package kz.nurda.locationdemo
+package kz.nurda.locationdemo.extra
 
 import android.Manifest
-import android.app.AlertDialog
 import android.app.PendingIntent
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
@@ -20,11 +19,12 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kz.nurda.locationdemo.R
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    lateinit var locationRequest: LocationRequest
+    lateinit var locationRequest : LocationRequest
 
     companion object {
         var instance: MainActivity? = null
@@ -41,38 +41,26 @@ class MainActivity : AppCompatActivity() {
         instance = this
 
         Dexter.withActivity(this)
-                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                .withListener(object : PermissionListener {
-                    override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-                        updateLocation()
-                    }
+            .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            .withListener(object : PermissionListener{
+                override fun onPermissionGranted(response: PermissionGrantedResponse?) {
+                    updateLocation()
+                }
 
-                    override fun onPermissionRationaleShouldBeShown(
-                            permission: PermissionRequest?,
-                            token: PermissionToken?
-                    ) {
-                        AlertDialog.Builder(this@MainActivity)
-                                .setTitle(R.string.permission_title)
-                                .setMessage(R.string.permission_message)
-                                .setNegativeButton(android.R.string.cancel, DialogInterface.OnClickListener { dialogInterface, i ->
-                                    dialogInterface.dismiss()
-                                    token?.cancelPermissionRequest()
-                                })
-                                .setPositiveButton(android.R.string.ok, DialogInterface.OnClickListener { dialogInterface, i ->
-                                    dialogInterface.dismiss()
-                                    token?.continuePermissionRequest()
-                                })
-                                .show()
-                    }
+                override fun onPermissionRationaleShouldBeShown(
+                    permission: PermissionRequest?,
+                    token: PermissionToken?
+                ) {
+                }
 
-                    override fun onPermissionDenied(response: PermissionDeniedResponse?) {
-                        Toast.makeText(this@MainActivity, R.string.permission_denied, Toast.LENGTH_SHORT).show()
-                    }
+                override fun onPermissionDenied(response: PermissionDeniedResponse?) {
+                    Toast.makeText(this@MainActivity, R.string.permission_denied, Toast.LENGTH_SHORT).show()
+                }
 
-                }).check()
+            }).check()
     }
 
-    fun updateLocation() {
+    fun updateLocation(){
         createLocationRequest()
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -99,9 +87,14 @@ class MainActivity : AppCompatActivity() {
         }!!
     }
 
+
     fun updateTextView(value: String) {
         this@MainActivity.runOnUiThread {
             tvCoordinates.text = value
+            Log.d("HelloHello", MyLocationService.coors)
         }
+        val serName = MyLocationService.ACTION_PROCESS_UPDATE
+        Log.d("HelloHello", serName)
+        Log.d("HelloHello", MyLocationService.coors)
     }
 }
